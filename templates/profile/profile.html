@@ -1,0 +1,58 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Profile Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="Profile Picture"
+                                     class="rounded-circle" width="150" height="150">
+                            {% else %}
+                                <img src="https://via.placeholder.com/150" alt="Default Profile Picture"
+                                     class="rounded-circle">
+                            {% endif %}
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th scope="row">Username</th>
+                                <td>{{ profile.username }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">First Name</th>
+                                <td>{{ profile.first_name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Last Name</th>
+                                <td>{{ profile.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email</th>
+                                <td>{{ profile.email }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bio</th>
+                                <td>{{ profile.bio|default:"No bio available" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Date Joined</th>
+                                <td>{{ profile.date_joined|date:"F j, Y" }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{% url 'profile-edit' %}" class="btn btn-primary">Edit Profile</a>
+                        <a href="{% url 'profile-delete' %}" class="btn btn-danger">Delete Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
