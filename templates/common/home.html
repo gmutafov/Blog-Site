@@ -1,0 +1,58 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Welcome to the Blog</h1>
+
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content|truncatechars:200 }}</p>
+                    <p class="text-muted">By {{ post.author }} | {{ post.created_at|date:"F j, Y" }}</p>
+                    <a href="{% url 'post-detail' post.id %}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-warning text-center" role="alert">
+            No Posts Found.
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if paginator.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ paginator.previous_page_number }}">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Previous</span>
+            </li>
+            {% endif %}
+
+            {% for page_num in paginator.paginator.page_range %}
+            <li class="page-item {% if page_num == page.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if paginator.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ paginator.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">Next</span>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}
