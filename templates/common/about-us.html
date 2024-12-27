@@ -1,0 +1,36 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2>About Us</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">
+                        Welcome to our Blog! This platform is dedicated to sharing ideas, knowledge, and experiences
+                        through engaging posts. Whether you're here to learn, explore, or connect, we're thrilled to
+                        have you.
+                    </p>
+                    <h4>Our Mission</h4>
+                    <p>
+                        We aim to provide a space where writers and readers can come together to explore diverse
+                        topics, spark meaningful discussions, and foster a community of curious minds.
+                    </p>
+                    <h4>What We Offer</h4>
+                    <ul>
+                        <li>Insightful articles on various topics.</li>
+                        <li>A platform for authors to share their ideas.</li>
+                        <li>A growing community of passionate individuals.</li>
+                    </ul>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'home' %}" class="btn btn-primary">Go Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

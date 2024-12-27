@@ -1,6 +1,6 @@
 
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, TemplateView
 
 from blogSite.posts.models import Post
 
@@ -20,3 +20,6 @@ class HomePageView(ListView):
         return queryset
 
 
+
+class AboutUsPageView(TemplateView):
+    template_name = 'common/about-us.html'
