@@ -23,6 +23,7 @@ class RegisterView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        messages.success(self.request, 'Your account has been created!')
         return super().form_valid(form)
 
 class UserLoginView(LoginView):

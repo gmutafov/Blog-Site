@@ -65,7 +65,7 @@ class CustomUserChangeForm(forms.ModelForm):
 
     class Meta:
         model = AppUser
-        fields = ['profile_picture', 'first_name', 'last_name', 'email']
+        fields = [ 'first_name', 'last_name', 'email', 'bio', 'profile_picture']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -83,6 +83,11 @@ class CustomUserChangeForm(forms.ModelForm):
         })
         self.fields['profile_picture'].widget.attrs.update({
             'placeholder': 'Profile picture URL (optional)',
+            'class': 'form-control'
+        })
+
+        self.fields['bio'].widget.attrs.update({
+            'placeholder': 'Bio',
             'class': 'form-control'
         })
 
