@@ -40,8 +40,7 @@ git clone https://github.com/gmutafov/Blog-Site.git
 
 # 📖 Overview
 
-This is a Django-based blog application designed for users to share and interact with blog posts. The app includes the following features:
-
+The Blog Site is a web application built with Django, allowing users to easily create, manage, and interact with blog posts. This application includes the essential features for a blogging platform such as user registration, post creation, comment functionality, and user interaction through likes.
 # 🛠Key Features
 - User Accounts:
 
