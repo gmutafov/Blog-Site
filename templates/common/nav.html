@@ -1,42 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">Blog</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">My Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'home' %}">Home</a>
                 </li>
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'post-create' %}">Create Post</a>
-                    </li>
-                {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                    <a class="nav-link" href="{% url 'post-create' %}">Create Post</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
-
+            </ul>
+            <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <form action="{% url 'logout' %}" method="POST" class="d-inline">
-                            {% csrf_token %}
-                            <button type="submit" class="logout-btn">Logout</button>
-                        </form>
-                    </li>
-
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ user.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}"><i class="bi bi-pencil-square"></i> Register</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
                 {% endif %}
             </ul>
         </div>

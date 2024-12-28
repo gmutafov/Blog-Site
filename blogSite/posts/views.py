@@ -1,8 +1,10 @@
 from django.contrib import messages
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
+from blogSite.posts.forms import CommentForm
 from blogSite.posts.mixins import PostCreateOrEditMixin
 from blogSite.posts.models import Post
 
@@ -54,3 +56,32 @@ class PostDeleteView(DeleteView):
 class PostDetailView(DetailView):
         model = Post
         template_name = 'posts/post-details.html'
+
+        def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['comment_form'] = CommentForm()
+            context['comments'] = self.object.comments.all()
+            context['total_likes'] = self.object.total_likes()
+            context['liked'] = self.request.user in self.object.likes.all()
+            return context
+
+
+class PostLikeView(View):
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+        return redirect('post-details', pk=pk)
+
+class CommentCreateView(View):
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+        return redirect('post-details', pk=pk)

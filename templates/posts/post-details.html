@@ -1,32 +1,86 @@
+{#{% extends 'common/base.html' %}#}
+{##}
+{#{% block content %}#}
+{#<div class="container mt-5">#}
+{#    <div class="row justify-content-center">#}
+{#        <div class="col-md-10">#}
+{#            <div class="card shadow-sm">#}
+{#                <div class="card-header bg-primary text-white">#}
+{#                    <h1 class="h3 mb-0 text-center">{{ object.title }}</h1>#}
+{#                </div>#}
+{#                <div class="card-body">#}
+{#                    <p><strong>Author:</strong> {{ object.author }}</p>#}
+{#                    <p><strong>Published on:</strong> {{ object.created_at|date:"F j, Y, g:i a" }}</p>#}
+{#                    <hr>#}
+{#                    <p>{{ object.content }}</p>#}
+{#                    {% if object.image %}#}
+{#                    <div class="text-center mb-4">#}
+{#                        <img src="{{ object.image.url }}" class="img-fluid rounded" alt="{{ object.title }}" style="max-height: 400px; object-fit: cover;">#}
+{#                    </div>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                {% if user == object.author %}#}
+{#                <div class="card-footer d-flex justify-content-between">#}
+{#                    <a href="{% url 'post-edit' object.id %}" class="btn btn-primary">Edit</a>#}
+{#                    <a href="{% url 'post-delete' object.id %}" class="btn btn-danger">Delete</a>#}
+{#                </div>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+{#{% endblock %}#}
+
 {% extends 'common/base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h1 class="h3 mb-0 text-center">{{ object.title }}</h1>
-                </div>
-                <div class="card-body">
-                    <p><strong>Author:</strong> {{ object.author }}</p>
-                    <p><strong>Published on:</strong> {{ object.created_at|date:"F j, Y, g:i a" }}</p>
-                    <hr>
-                    <p>{{ object.content }}</p>
-                    {% if object.image %}
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h3 text-center">{{ post.title }}</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>Author:</strong> {{ post.author }}</p>
+                <p><strong>Published on:</strong> {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+                <hr>
+                <p>{{ post.content }}</p>
+                 {% if post.image %}
                     <div class="text-center mb-4">
-                        <img src="{{ object.image.url }}" class="img-fluid rounded" alt="{{ object.title }}" style="max-height: 400px; object-fit: cover;">
+                        <img src="{{ post.image.url }}" class="img-fluid rounded" alt="{{ post.title }}">
                     </div>
-                    {% endif %}
-                </div>
-                {% if user == object.author %}
-                <div class="card-footer d-flex justify-content-between">
-                    <a href="{% url 'post-edit' object.id %}" class="btn btn-primary">Edit</a>
-                    <a href="{% url 'post-delete' object.id %}" class="btn btn-danger">Delete</a>
-                </div>
                 {% endif %}
             </div>
+            <div class="card-footer d-flex justify-content-between">
+                <form method="post" action="{% url 'post-like' post.id %}">
+                    {% csrf_token %}
+                    {% if liked %}
+                        <button type="submit" class="btn btn-danger">❤️ Unlike</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-secondary">🤍 Like</button>
+                    {% endif %}
+                    <span>{{ total_likes }} {{ total_likes|pluralize:"like,likes" }}</span>
+                </form>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="mt-5">
+            <h4>Comments</h4>
+            <form method="post" action="{% url 'comment-create' post.id %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
+            <hr>
+            {% for comment in comments %}
+                <div class="mb-3">
+                    <strong>{{ comment.author }}</strong> <small
+                        class="text-muted">on {{ comment.created_at|date:"F j, Y, g:i a" }}</small>
+                    <p>{{ comment.content }}</p>
+                </div>
+            {% empty %}
+                <p>No comments yet. Be the first to comment!</p>
+            {% endfor %}
         </div>
     </div>
-</div>
 {% endblock %}

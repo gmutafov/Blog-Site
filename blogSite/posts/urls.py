@@ -8,5 +8,7 @@ urlpatterns = [
         path('details/', views.PostDetailView.as_view(), name='post-details'),
         path('edit/', views.PostEditView.as_view(), name='post-edit'),
         path('delete/', views.PostDeleteView.as_view(), name='post-delete'),
+        path('like/', views.PostLikeView.as_view(), name='post-like'),
+        path('comment/', views.CommentCreateView.as_view(), name='comment-create'),
     ])),
 ]
