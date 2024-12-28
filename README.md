@@ -36,6 +36,8 @@ git clone https://github.com/gmutafov/Blog-Site.git
   python manage.py runserver
 ```
 
+**Deployed at:** https://blog-site-b1ks.onrender.com
+
 # 📖 Overview
 
 This is a Django-based blog application designed for users to share and interact with blog posts. The app includes the following features:
