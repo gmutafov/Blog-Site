@@ -1,0 +1,20 @@
+{% extends 'common/base.html' %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8 col-sm-10">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h3 class="text-center">404 - Page Not Found</h3>
+                    </div>
+                    <div class="card-body text-center">
+                        <p class="lead">Sorry, the page you're looking for doesn't exist.</p>
+                        <p>It might have been removed, or the URL might be incorrect.</p>
+                        <a href="{% url 'home' %}" class="btn btn-primary">Go to Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

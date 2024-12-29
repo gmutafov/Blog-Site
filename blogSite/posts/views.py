@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -6,13 +8,13 @@ from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 
 from blogSite.posts.forms import CommentForm
 from blogSite.posts.mixins import PostCreateOrEditMixin
-from blogSite.posts.models import Post
+from blogSite.posts.models import Post, Comment
 
 
 # Create your views here.
 
 
-class PostCreateView(PostCreateOrEditMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, PostCreateOrEditMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'Create'
@@ -26,7 +28,7 @@ class PostCreateView(PostCreateOrEditMixin, CreateView):
         })
 
 
-class PostEditView(PostCreateOrEditMixin, UpdateView):
+class PostEditView(LoginRequiredMixin, PostCreateOrEditMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['action'] = 'Edit'
@@ -40,7 +42,7 @@ class PostEditView(PostCreateOrEditMixin, UpdateView):
         })
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'posts/delete-post.html'
     success_url = reverse_lazy('home')
@@ -56,6 +58,7 @@ class PostDeleteView(DeleteView):
 class PostDetailView(DetailView):
         model = Post
         template_name = 'posts/post-details.html'
+        context_object_name = 'post'
 
         def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
@@ -66,7 +69,7 @@ class PostDetailView(DetailView):
             return context
 
 
-class PostLikeView(View):
+class PostLikeView(LoginRequiredMixin, View):
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
         if request.user in post.likes.all():
@@ -75,7 +78,7 @@ class PostLikeView(View):
             post.likes.add(request.user)
         return redirect('post-details', pk=pk)
 
-class CommentCreateView(View):
+class CommentCreateView(LoginRequiredMixin, View):
     def post(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
         form = CommentForm(request.POST)
@@ -85,3 +88,16 @@ class CommentCreateView(View):
             comment.author = request.user
             comment.save()
         return redirect('post-details', pk=pk)
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+
+    def get_success_url(self):
+        return reverse_lazy('post-details', kwargs={'pk': self.object.post.pk})
+
+    def dispatch(self, request, *args, **kwargs):
+        comment = self.get_object()
+        if comment.author != request.user:
+            return HttpResponseForbidden("You are not allowed to delete this comment.")
+        return super().dispatch(request, *args, **kwargs)

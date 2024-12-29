@@ -23,3 +23,7 @@ class HomePageView(ListView):
 
 class AboutUsPageView(TemplateView):
     template_name = 'common/about-us.html'
+
+
+class Failure(TemplateView):
+    template_name = 'common/failure.html'

@@ -11,7 +11,7 @@
                 <p><strong>Published on:</strong> {{ post.created_at|date:"F j, Y, g:i a" }}</p>
                 <hr>
                 <p>{{ post.content }}</p>
-                 {% if post.image %}
+                {% if post.image %}
                     <div class="text-center mb-4">
                         <img src="{{ post.image.url }}" class="img-fluid rounded" alt="{{ post.title }}">
                     </div>
@@ -39,11 +39,23 @@
                 <button type="submit" class="btn btn-primary">Add Comment</button>
             </form>
             <hr>
+
             {% for comment in comments %}
-                <div class="mb-3">
-                    <strong>{{ comment.author }}</strong> <small
-                        class="text-muted">on {{ comment.created_at|date:"F j, Y, g:i a" }}</small>
-                    <p>{{ comment.content }}</p>
+                <div class="mb-3 d-flex justify-content-between">
+                    <div>
+                        <strong>{{ comment.author }}</strong>
+                        <small class="text-muted">on {{ comment.created_at|date:"F j, Y, g:i a" }}</small>
+                        <p>{{ comment.content }}</p>
+                    </div>
+
+                    {% if comment.author == request.user %}
+                        <div class="d-flex align-items-center">
+                            <form method="post" action="{% url 'comment-delete' comment.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
             {% empty %}
                 <p>No comments yet. Be the first to comment!</p>

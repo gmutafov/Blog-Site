@@ -1,10 +1,10 @@
 from django.contrib import messages
-from django.contrib.auth import logout, login
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 
@@ -21,10 +21,13 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        messages.success(self.request, 'Your account has been created!')
-        return super().form_valid(form)
+        try:
+            user = form.save()
+            login(self.request, user)
+            return redirect(self.success_url)
+        except Exception as e:
+            return redirect('failure')
+
 
 class UserLoginView(LoginView):
     template_name = "registration/login.html"
