@@ -8,6 +8,25 @@ class PostsBaseForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'image',]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['title'].widget.attrs.update({
+            'placeholder': 'Enter a Title',
+            'class': 'form-control'
+        })
+        self.fields['content'].widget.attrs.update({
+            'placeholder': 'Enter your content',
+            'class': 'form-control'
+        })
+        self.fields['image'].widget.attrs.update({
+            'placeholder': 'Add an URL image (optional)',
+            'class': 'form-control'
+        })
+
+        self.fields['title'].help_text = None
+        self.fields['content'].help_text = None
+        self.fields['image'].help_text = None
 
 class CommentForm(forms.ModelForm):
     class Meta:

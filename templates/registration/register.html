@@ -10,7 +10,7 @@
                             {% csrf_token %}
 
 
-                    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+                    <form method="POST" action="{% url 'register' %}">
 
                     {% csrf_token %}
                     {{ form.as_p }}

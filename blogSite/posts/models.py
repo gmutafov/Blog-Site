@@ -9,7 +9,7 @@ UserModel = get_user_model()
 class Post(models.Model):
     title = models.CharField(max_length=200, validators=[MinLengthValidator(3)])
     content = models.TextField()
-    image = models.ImageField(upload_to='posts/', null=True, blank=True)
+    image = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(UserModel, on_delete=models.CASCADE)
