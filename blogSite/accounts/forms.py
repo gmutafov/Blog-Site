@@ -49,6 +49,7 @@ class CustomUserCreationForm(UserCreationForm):
         self.fields['username'].help_text = None
         self.fields['password1'].help_text = None
         self.fields['password2'].help_text = None
+        self.fields['first_name'].help_text = None
 
 
 
