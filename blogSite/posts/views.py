@@ -101,3 +101,6 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
         if comment.author != request.user:
             return HttpResponseForbidden("You are not allowed to delete this comment.")
         return super().dispatch(request, *args, **kwargs)
+
+
+
