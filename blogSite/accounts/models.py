@@ -21,7 +21,7 @@ class AppUser(AbstractUser):
     )
     email = models.EmailField(unique=True)
     bio = models.TextField(blank=True, null=True)
-    profile_picture = models.URLField(blank=True, null=True)
+    profile_picture = models.URLField(blank=True, null=True, max_length=400)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
