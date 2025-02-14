@@ -36,7 +36,6 @@ git clone https://github.com/gmutafov/Blog-Site.git
   python manage.py runserver
 ```
 
-**Deployed at:** https://blog-site-b1ks.onrender.com
 
 # 📖 Overview
 
